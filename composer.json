@@ -1,0 +1,30 @@
+{
+  "name": "christhesoul/spektrix",
+  "description": "A PHP wrapper for working with Spektrix in Wordpress",
+  "keywords": [
+    "spektrix",
+    "PHP",
+    "wrapper"
+  ],
+  "homepage": "https://github.com/christhesoul/spektrix",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Chris Waters",
+      "email": "chris@wearecondiment.com",
+      "homepage": "http://condiment.co.uk",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Spektrix": ["src", "tests"]
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "~1.0.6"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.1.*"
+  }
+}
