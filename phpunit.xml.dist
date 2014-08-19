@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php">
-    <testsuites>
-        <testsuite name="Spektrix Test Suite">
-            <directory>tests/Spektrix</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src/Spektrix</directory>
-        </whitelist>
-    </filter>
+  <php>
+    <env name="SPEKTRIX_API_KEY" value="abc-123"/>
+    <env name="SPEKTRIX_CERTIFICATE_PATH" value="/foo/bar/fuzz"/>
+    <env name="SPEKTRIX_KEY_PATH" value="/fuzz/bar/foo"/>
+    <env name="SPEKTRIX_API_URL" value="http://spektrix.com/"/>
+  </php>
+  <testsuites>
+    <testsuite name="Spektrix Test Suite">
+      <directory>tests/Spektrix</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist>
+      <directory suffix=".php">src/Spektrix</directory>
+    </whitelist>
+  </filter>
 </phpunit>
