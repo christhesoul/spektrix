@@ -7,6 +7,7 @@ class Base
   protected $wp_theme;
   protected $resource;
   protected $params;
+  protected $path_to_cache;
 
   private $api_key;
   private $certificate_path;
@@ -23,6 +24,32 @@ class Base
     $this->certificate_path = getenv('SPEKTRIX_CERTIFICATE_PATH');
     $this->key_path = getenv('SPEKTRIX_KEY_PATH');
     $this->api_url = getenv('SPEKTRIX_API_URL');
+  }
+  
+  /**
+    * Get an XML object
+    *
+    * @param string $resource
+    * @param array $params
+    * @return SimpleXMLElement(s)
+    */
+  
+  protected function get_xml_object($resource, $params=array())
+  {
+    $this->resource = $resource;
+    $this->params = $params;
+    try {
+      $xml_string = $this->load_or_retrieve_data();
+      if($xml_string){
+        $xml_as_object = simplexml_load_string($xml_string);
+        return $xml_as_object;
+      } else {
+        throw new Exception('No XML received from Spektrix');
+      }
+    }
+    catch (Exception $e){
+      $this->redirectAsError();
+    }
   }
   
   /**
@@ -68,40 +95,14 @@ class Base
   
   private function load_or_retrieve_data()
   {
-    $file = new CachedFile();
+    $file = new CachedFile($this->resource, $this->params);
     if($file->is_cached_and_fresh()){
       $xml_string = $file->retrieve();
     } else {
-      $xml_string = $this->get_xml($this->build_url());
+      $xml_string = $this->request_xml($this->build_url());
       $file->store($xml_string);
     }
     return $xml_string;
-  }
-  
-  /**
-    * Get an XML object
-    *
-    * @param string $resource
-    * @param array $params
-    * @return SimpleXMLElement(s)
-    */
-  
-  function get_xml_object($resource, $params=array())
-  {
-    $this->resource = $resource;
-    $this->params = $params;
-    try {
-      $xml_string = $this->load_or_retrieve_data();
-      if($xml_string){
-        $xml_as_object = simplexml_load_string($xml_string);
-        return $xml_as_object;
-      } else {
-        throw new Exception('No XML received from Spektrix');
-      }
-    }
-    catch (Exception $e){
-      $this->redirectAsError();
-    }
   }
   
   /**
