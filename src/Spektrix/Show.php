@@ -4,7 +4,6 @@
  * From their API docs:
  * "An event in Spektrix can be thought of as a ‘show’. It encapsulates the descriptive data about an event, such as its Name and Description. It is a container for instances."
  */
- 
 namespace Spektrix;
 
 class Show extends Base
@@ -29,9 +28,9 @@ class Show extends Base
   
   function __construct($event)
   {
-    parent::__construct();
     
     if(!is_object($event)) {
+      parent::__construct();
       $event = $this->get_show_from_spektrix($event);
     }
     
