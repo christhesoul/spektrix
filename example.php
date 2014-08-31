@@ -5,7 +5,7 @@ require('vendor/autoload.php');
 Dotenv::load(__DIR__);
 
 echo '<pre>';
-$show = new Spektrix\Show(19078);
+$shows = new Spektrix\ShowCollection();
 
-print_r($show);
+print_r($shows->data);
 //print_r($hello);

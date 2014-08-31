@@ -32,6 +32,8 @@ class Show extends Base
     if(!is_object($event)) {
       parent::__construct();
       $event = $this->get_show_from_spektrix($event);
+    } else if(property_exists($event, 'Event')) {
+      $event = $event->Event;
     }
     
     $this->id = (integer) $event->attributes()->id;
@@ -58,7 +60,7 @@ class Show extends Base
   
   public function has_tag($tag)
   {
-    return in_array($tag, $tags);
+    return in_array($tag, $this->tags);
   }
   
   private function get_show_from_spektrix($id){

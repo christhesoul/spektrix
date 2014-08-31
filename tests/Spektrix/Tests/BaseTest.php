@@ -15,8 +15,21 @@ class BaseTest extends \PHPUnit_Framework_TestCase
   
   public function testBuildUrl()
   {
-    $call = new Spektrix\Base();
-    $this->assertEquals('http://spektrix.com/events?api_key=abc-123&all=true', $call->build_url('events'));
+    $fixture = new Spektrix\Base();
+    $reflector = new ReflectionProperty('Spektrix\Base', 'resource');
+    $reflector->setAccessible(true);
+    $reflector->setValue($fixture, 'events');
+    
+    $method = new ReflectionMethod(
+      'Spektrix\Base', 'build_url'
+    );
+    
+    $method->setAccessible(TRUE);
+    
+    $this->assertEquals(
+      'http://spektrix.com/events?api_key=abc-123&all=true', 
+      $method->invoke($fixture)
+    );
   }
   
   
