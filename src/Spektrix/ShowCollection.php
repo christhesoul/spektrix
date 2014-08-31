@@ -1,8 +1,6 @@
 <?php
 namespace Spektrix;
 
-use ArrayObject;
-
 class ShowCollection extends Base
 {
   public $data;
