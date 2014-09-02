@@ -44,10 +44,10 @@ class Base
         $xml_as_object = simplexml_load_string($xml_string);
         return $xml_as_object;
       } else {
-        throw new Exception('No XML received from Spektrix');
+        throw new \Exception('No XML received from Spektrix');
       }
     }
-    catch (Exception $e){
+    catch (\Exception $e){
       $this->redirectAsError();
     }
   }
