@@ -112,7 +112,7 @@ class Base
     */
     
   private function redirectAsError(){
-    header("Location: " . home_url());
+    echo "<div class='alert alert-warning'>Sorry, we seem to be having a few problems with the connection to our booking system at the moment. Please give our box office a call to book your tickets</div>";    
     die();
   }
 
