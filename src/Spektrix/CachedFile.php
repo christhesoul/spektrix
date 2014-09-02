@@ -102,7 +102,7 @@ class CachedFile extends Base {
     if($this->path_to_cache){
       return $this->path_to_cache . $this->file_name;
     } else {
-      return $this->path_to_theme() . '/cache/' . $this->file_name;
+      return get_stylesheet_directory() . '/cache/' . $this->file_name;
     }
   } 
 }
