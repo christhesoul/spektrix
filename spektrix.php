@@ -10,5 +10,3 @@ Author URI:         http://christhesoul.svbtle.com
 License:            MIT License
 License URI:        http://opensource.org/licenses/MIT
 */
-
-require('vendor/autoload.php');
