@@ -13,6 +13,11 @@ class ShowCollection extends Base
     $this->data = new ArrayObject($this->collect_shows_from_xml($events_xml));
   }
   
+  public function with_tag($tag)
+  {
+    return array_filter($this->data->getArrayCopy(), function($show) use ($tag) { return $show->has_tag($tag); });
+  }
+  
   public function as_ids()
   {
     return array_keys($this->data->getArrayCopy());

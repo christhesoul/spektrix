@@ -7,5 +7,7 @@ Dotenv::load(__DIR__);
 echo '<pre>';
 $shows = new Spektrix\ShowCollection();
 
-print_r($shows->data);
+foreach($shows->with_tag('spill festival') as $show){
+  echo '<h1>' . $show->name . '</h1>';
+}
 //print_r($hello);
