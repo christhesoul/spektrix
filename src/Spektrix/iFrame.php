@@ -9,6 +9,7 @@ class iFrame
   private $page_name;
   private $params_string;
   public $secure;
+  public $stylesheet;
   
   private $secure_prefix;
   private $insecure_prefix;
@@ -21,8 +22,14 @@ class iFrame
     $this->insecure_prefix = getenv('INSECURE_IFRAME_PATH');
   }
   
+  public function set_stylesheet($string)
+  {
+    $this->stylesheet = $string;
+    return $this;
+  }
+  
   public function iframe_url(){
-    return $this->prefix($this->secure) . $this->page_name . '.aspx?' . $this->params_string . 'stylesheet=condiment.css&resize=true';
+    return $this->prefix($this->secure) . $this->page_name . '.aspx?' . $this->params_string . 'stylesheet=' . $this->stylesheet . '&resize=true';
   }
   
   public function render_iframe(){

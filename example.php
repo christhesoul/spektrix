@@ -13,8 +13,4 @@ foreach($shows->with_tag('spill festival') as $show){
 }
 
 $spektrix_iframe_url = new Spektrix\iFrame('EventDetails',array('EventId' => $show_id));
-
 echo $spektrix_iframe_url->render_iframe();
-
-
-//print_r($hello);
