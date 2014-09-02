@@ -9,5 +9,12 @@ $shows = new Spektrix\ShowCollection();
 
 foreach($shows->with_tag('spill festival') as $show){
   echo '<h1>' . $show->name . '</h1>';
+  $show_id = $show->id;
 }
+
+$spektrix_iframe_url = new Spektrix\iFrame('EventDetails',array('EventId' => $show_id));
+
+echo $spektrix_iframe_url->render_iframe();
+
+
 //print_r($hello);
