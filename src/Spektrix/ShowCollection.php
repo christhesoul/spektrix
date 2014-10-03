@@ -50,7 +50,8 @@ class ShowCollection extends Base
         $this->data[$spektrix_id]->wp_id = $post->ID;
       }
     }
-    return array_filter($this->data, function($show) { return $show->wp_id; });
+    $this->data = new ArrayObject(array_filter($this->data->getArrayCopy(), function($show) { return $show->wp_id; }));
+    return $this;
   }
 
   private function collect_shows_from_xml($events_xml)
