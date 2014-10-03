@@ -32,6 +32,27 @@ class ShowCollection extends Base
     }
   }
 
+  /**
+    * Takes an array of Wordpress posts that have a Spektrix ID as a custom meta
+    * matches the Wordpress post to Spektrix show object, and then filters out
+    * all Spektrix objects that aren't in the Wordpress database.
+    * Each Spektrix $show will now have a wp_id attribute, i.e. $show->wp_id
+    *
+    * @param array $wp_posts Array of Wordpress shows
+    * @param string $meta_key Your meta key for the Spektrix ID
+    * @return array Shows in both Spektrix and Wordpress
+    */
+
+  public function map_shows_to_wp_array($wp_posts, $meta_key){
+    foreach($wp_posts as $post){
+      $spektrix_id = get_post_meta($post->ID, $meta_key, true);
+      if(array_key_exists($spektrix_id, $this->data)){
+        $this->data[$spektrix_id]->wp_id = $post->ID;
+      }
+    }
+    return array_filter($this->data->getArrayCopy(), function($show) { return $show->wp_id; });
+  }
+
   private function collect_shows_from_xml($events_xml)
   {
     $shows = array();
