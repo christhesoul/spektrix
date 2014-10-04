@@ -117,15 +117,6 @@ function get_price_list_for_performance($show_prices,$performance)
   }
 }
 
-function get_performance_months($performances){
-  $months = array();
-  foreach($performances as $performance){
-    $months[] = $performance->start_time->format('F Y');
-  }
-  $months = array_unique($months);
-  return $months;
-}
-
 function get_performance_dates($performances){
   $dates = array();
   foreach($performances as $performance){

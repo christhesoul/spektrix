@@ -196,4 +196,9 @@ class Show extends Base
     }
     return $string;
   }
+  
+  public function performance_months()
+  {
+    return array_unique(array_map(function($performance) { return $performance->start_time->format('M Y'); }, $this->performances));
+  }
 }

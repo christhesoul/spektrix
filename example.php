@@ -10,5 +10,5 @@ $shows->with_performances();
 
 foreach($shows->data as $show){
   echo $show->name . '<br>';
-  echo $show->performance_range() . '<br>';
+  echo implode(', ', $show->performance_months()) . '<br>';
 }
