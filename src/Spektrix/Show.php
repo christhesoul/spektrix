@@ -135,17 +135,6 @@ class Show extends Base
     return $api->collect_shows($shows);
   }
 
-  function get_show_performances($show_id)
-  {
-    $performances = $this->get_object('instances',array('event_id'=>$show_id));
-    return $this->collect_performances($performances);
-  }
-
-  function get_performances()
-  {
-    return $this->get_show_performances($this->id);
-  }
-
   function get_price_lists()
   {
     $pricelists = $this->get_price_list_for_show($this->id);
@@ -155,68 +144,56 @@ class Show extends Base
     }
     return $collection;
   }
-}
-
-function convert_to_array_of_ids($collection){
-  $ids = array();
-  foreach($collection as $c){
-    $ids[] = $c->id;
+  
+  public function is_in_past()
+  {
+    $last_performance = array_pop($this->performances);
+    $now = new \DateTime();
+    return $now > $last_performance->start_time;
   }
-  return $ids;
-}
+  
+  public function performance_range($prefix = true){
+    $performances = $this->performances;
+    if($prefix){
+      $string = !$this->is_in_past() ? "Showing " : "Performed ";
+    } else {
+      $string = "";
+    }
 
-function get_wp_shows_from_spektrix_shows($shows) {
-  $show_ids = convert_to_array_of_ids($shows);
+    $from = '';
+    $to = '';
+    $first_show = reset($performances)->start_time->format('D j');
+    $first_show_month = reset($performances)->start_time->format('M');
+    $first_show_year = reset($performances)->start_time->format('Y');
+    $last_show = end($performances)->start_time->format('D j');
+    $last_show_month = end($performances)->start_time->format('M');
+    $last_show_year = end($performances)->start_time->format('Y');
 
-  $db_shows = get_posts(array(
-     'post_type' => 'shows',
-     'posts_per_page' => -1,
-     'meta_query' => array(
-        array(
-           'key'     => '_spectrix_id',
-           'value'   => $show_ids,
-           'compare' => 'IN'
-        )
-     )
-  ));
+    if($first_show == $last_show){
+      $from .= $first_show . ' ' . $first_show_month;
+    } else {
+      $to = $last_show . ' ' . $last_show_month;
+      if($first_show_month == $last_show_month){
+        $from = $first_show;
+      } else {
+        if($first_show_year == $last_show_year){
+          $from = $first_show . ' ' . $first_show_month;
+        } else {
+          $from = $first_show . ' ' . $first_show_month;
+        }
+      }
+    }
 
-  $wp_shows = array();
-  foreach($db_shows as $db_show):
-    $spectrix_id = get_post_meta($db_show->ID,'_spectrix_id',true);
-    $wp_shows[$spectrix_id] = $db_show->ID;
-  endforeach;
+    $from = str_replace(' ','&nbsp;',$from);
+    $to = str_replace(' ','&nbsp;',$to);
 
-  return $wp_shows;
-}
-
-function filter_published($shows,$wp_shows){
-  $published = array();
-  foreach($shows as $k => $show):
-    if(array_key_exists($show->id,$wp_shows)):
-      $published[$k] = $show;
-    endif;
-  endforeach;
-  return $published;
-}
-
-function filter_meals($shows){
-  $not_meals = array();
-  foreach($shows as $k => $show):
-    if($show->season != 'Meals & Set Menus'):
-      $not_meals[$k] = $show;
-    endif;
-  endforeach;
-  return $not_meals;
-}
-
-function filter_shows_by_spektrix_tag($all_shows,$term_slugs){
-  $term_slugs = is_array($term_slugs) ? $term_slugs : array($term_slugs);
-  $shows = array();
-  foreach($all_shows as $show):
-    $match_array = array_intersect($term_slugs,$show->tags);
-    if(!empty($match_array)):
-      $shows[] = $show;
-    endif;
-  endforeach;
-  return $shows;
+    if($to == ''){
+      if($prefix) $string.= 'on ';
+      $string.= $from;
+    } else {
+      if($prefix) $string.= 'from ';
+      $string.= $from . ' &mdash; ' . $to;
+    }
+    return $string;
+  }
 }

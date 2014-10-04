@@ -31,6 +31,25 @@ class ShowCollection extends Base
       throw new \Exception('Method with_ids($array) expects argument to be array, got ' . gettype($array_of_ids));
     }
   }
+  
+  /**
+    * Loads all performances and groups them by show
+    * (which means the array keys are show ids)
+    * and then associates each array of performance with a show.
+    * This means you $show->performances will return an array of performances.
+    *
+    * @return object ShowCollection object but now with performance info
+    */
+  
+  public function with_performances()
+  {
+    $performances = new PerformanceCollection();
+    $performances->group_by_show();
+    foreach($this->data as $show){
+      $show->performances = $performances->data[$show->id];
+    }
+    return $this;
+  }
 
   /**
     * Takes an array of Wordpress posts that have a Spektrix ID as a custom meta

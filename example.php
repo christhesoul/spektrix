@@ -6,7 +6,9 @@ Dotenv::load(__DIR__);
 
 echo '<pre>';
 $shows = new Spektrix\ShowCollection();
-foreach($shows->with_ids(array(19078,18877)) as $show){
-  $show->wp_id = 2;
-  print_r($show);
+$shows->with_performances();
+
+foreach($shows->data as $show){
+  echo $show->name . '<br>';
+  echo $show->performance_range() . '<br>';
 }
