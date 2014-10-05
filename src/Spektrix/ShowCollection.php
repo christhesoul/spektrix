@@ -11,7 +11,6 @@ class ShowCollection extends Base
   {
     $events_xml = $this->load_and_clean_xml($shows);
     $this->data = new ArrayObject($this->collect_shows_from_xml($events_xml));
-    $this->with_performances()->sort_by_first_performance();
   }
   
   public function sort_by_first_performance()
