@@ -11,6 +11,38 @@ class ShowCollection extends Base
   {
     $events_xml = $this->load_and_clean_xml($shows);
     $this->data = new ArrayObject($this->collect_shows_from_xml($events_xml));
+    $this->with_performances()->sort_by_first_performance();
+  }
+  
+  public function sort_by_first_performance()
+  {
+    $shows = $this->data->getArrayCopy();
+    usort($shows, function($a, $b) {
+      return $a->performances[0]->start_time->format('U') - $b->performances[0]->start_time->format('U');
+    });
+    $this->data = new ArrayObject($shows);
+    return $this;
+  }
+  
+  /**
+    * Groups shows by month, so you can display all shows for January, February etc.
+    * The key is in the format 2014-04-01 (first day of month)
+    * This means you can strtotime($key) and format accordingly
+    *
+    * @return object ShowCollection object but with shows grouped by month
+    */
+  
+  public function grouped_by_month()
+  {
+    $by_month = array();
+    foreach($this->data as $show){
+      foreach($show->performance_months() as $month){
+        $by_month[$month][] = $show;
+      }
+    }
+    ksort($by_month);
+    $this->data = new ArrayObject($by_month);
+    return $this;
   }
 
   public function with_tag($tag)

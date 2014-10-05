@@ -199,6 +199,6 @@ class Show extends Base
   
   public function performance_months()
   {
-    return array_unique(array_map(function($performance) { return $performance->start_time->format('M Y'); }, $this->performances));
+    return array_unique(array_map(function($performance) { return $performance->start_time->format('Y-m-01'); }, $this->performances));
   }
 }

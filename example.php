@@ -5,10 +5,9 @@ require('vendor/autoload.php');
 Dotenv::load(__DIR__);
 
 echo '<pre>';
-$shows = new Spektrix\ShowCollection();
-$shows->with_performances();
 
-foreach($shows->data as $show){
-  echo $show->name . '<br>';
-  echo implode(', ', $show->performance_months()) . '<br>';
+$shows = new Spektrix\ShowCollection();
+$shows->grouped_by_month();
+foreach($shows->data as $month => $shows){
+  echo date('M Y', strtotime($month)) . ' -> ' . count($shows) . '<br>';
 }
