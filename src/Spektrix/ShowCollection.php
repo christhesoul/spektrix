@@ -148,6 +148,20 @@ class ShowCollection extends Base
     return $this;
   }
 
+  /**
+    * Returns a flattened array of tags from shows
+    *
+    * @return array of tags
+    */
+
+  public function tags_from_shows()
+  {
+    $array = array_map(function($show) { return $show->tags; }, $this->data->getArrayCopy());
+    $return = array();
+    array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+    return array_values(array_unique($return));
+  }
+
   private function collect_shows_from_xml($events_xml)
   {
     $shows = array();

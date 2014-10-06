@@ -7,10 +7,7 @@ Dotenv::load(__DIR__);
 echo '<pre>';
 
 $shows = new Spektrix\ShowCollection();
-$shows->upcoming()->grouped_by_month();
+$tags = $shows->upcoming()->tags_from_shows();
 
-foreach($shows->data as $month => $shows){
-  print_r($month);
-  print_r($shows);
-}
+print_r($tags);
 
