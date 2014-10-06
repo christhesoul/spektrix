@@ -144,14 +144,14 @@ class Show extends Base
     }
     return $collection;
   }
-  
+
   public function is_in_past()
   {
-    $last_performance = array_pop($this->performances);
+    $last_performance = end($this->performances);
     $now = new \DateTime();
     return $now > $last_performance->start_time;
   }
-  
+
   public function performance_range($prefix = true){
     $performances = $this->performances;
     if($prefix){
@@ -196,7 +196,7 @@ class Show extends Base
     }
     return $string;
   }
-  
+
   public function performance_months()
   {
     return array_unique(array_map(function($performance) { return $performance->start_time->format('Y-m-01'); }, $this->performances));

@@ -12,17 +12,46 @@ class ShowCollection extends Base
     $events_xml = $this->load_and_clean_xml($shows);
     $this->data = new ArrayObject($this->collect_shows_from_xml($events_xml));
   }
-  
+
+  /**
+    * Helper that chains methods together
+    *
+    * @return object ShowCollection object with performances in the future, sorted by first performance
+    */
+
+  public function upcoming()
+  {
+    return $this->add_performances()->with_performances()->in_future()->sort_by_first_performance();
+  }
+
+  /**
+    * Filter shows so we only have ones in the future
+    *
+    * @return object ShowCollection object but with shows in future
+    */
+
+  public function in_future()
+  {
+    $this->data = new ArrayObject(array_filter($this->data->getArrayCopy(), function($show) { return !$show->is_in_past(); }));
+    return $this;
+  }
+
+  /**
+    * Sorts shows by their first performance date
+    *
+    * @return object ShowCollection object but with shows sorted by date
+    */
+
   public function sort_by_first_performance()
   {
     $shows = $this->data->getArrayCopy();
-    usort($shows, function($a, $b) {
+    uasort($shows, function($a, $b) {
       return $a->performances[0]->start_time->format('U') - $b->performances[0]->start_time->format('U');
     });
     $this->data = new ArrayObject($shows);
     return $this;
   }
-  
+
   /**
     * Groups shows by month, so you can display all shows for January, February etc.
     * The key is in the format 2014-04-01 (first day of month)
@@ -30,7 +59,7 @@ class ShowCollection extends Base
     *
     * @return object ShowCollection object but with shows grouped by month
     */
-  
+
   public function grouped_by_month()
   {
     $by_month = array();
@@ -62,7 +91,7 @@ class ShowCollection extends Base
       throw new \Exception('Method with_ids($array) expects argument to be array, got ' . gettype($array_of_ids));
     }
   }
-  
+
   /**
     * Loads all performances and groups them by show
     * (which means the array keys are show ids)
@@ -71,14 +100,29 @@ class ShowCollection extends Base
     *
     * @return object ShowCollection object but now with performance info
     */
-  
-  public function with_performances()
+
+  public function add_performances()
   {
     $performances = new PerformanceCollection();
     $performances->group_by_show();
     foreach($this->data as $show){
       $show->performances = $performances->data[$show->id];
     }
+    return $this;
+  }
+
+  /**
+    * Loads all performances and groups them by show
+    * (which means the array keys are show ids)
+    * and then associates each array of performance with a show.
+    * This means you $show->performances will return an array of performances.
+    *
+    * @return object ShowCollection object but now with performance info
+    */
+
+  public function with_performances()
+  {
+    $this->data = new ArrayObject(array_filter($this->data->getArrayCopy(), function($show) { return !empty($show->performances); }));
     return $this;
   }
 
