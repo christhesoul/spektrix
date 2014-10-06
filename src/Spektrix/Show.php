@@ -201,4 +201,12 @@ class Show extends Base
   {
     return array_unique(array_map(function($performance) { return $performance->start_time->format('Y-m-01'); }, $this->performances));
   }
+
+  public function add_performances()
+  {
+    $performances = new PerformanceCollection();
+    $performances->group_by_show();
+    $this->performances = $performances->data[$this->id];
+    return $this;
+  }
 }

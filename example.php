@@ -6,8 +6,7 @@ Dotenv::load(__DIR__);
 
 echo '<pre>';
 
-$shows = new Spektrix\ShowCollection();
-$tags = $shows->upcoming()->tags_from_shows();
-
-print_r($tags);
+$show = new Spektrix\Show(19078);
+$show->add_performances();
+print_r($show);
 
