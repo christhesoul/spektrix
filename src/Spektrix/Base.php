@@ -13,11 +13,11 @@ class Base
   private $certificate_path;
   private $key_path;
   private $api_url;
-  
+
   /**
     * Create a new object to connect to Spektrix
     */
-    
+
   public function __construct()
   {
     $this->api_key = getenv('SPEKTRIX_API_KEY');
@@ -25,7 +25,7 @@ class Base
     $this->key_path = getenv('SPEKTRIX_KEY_PATH');
     $this->api_url = getenv('SPEKTRIX_API_URL');
   }
-  
+
   /**
     * Get an XML object
     *
@@ -33,7 +33,7 @@ class Base
     * @param array $params
     * @return SimpleXMLElement(s)
     */
-  
+
   protected function get_xml_object($resource, $params=array())
   {
     $this->resource = $resource;
@@ -51,26 +51,25 @@ class Base
       $this->redirectAsError();
     }
   }
-  
+
   /**
     * Build the URL for the API request
     *
     * @return string - the full to use with cURL
     * @see Base::request_xml()
     */
-    
+
   private function build_url()
   {
-    if(empty($this->params)){
-      $params_string = '';
-    } else {
+    $params_string = '';
+    if(!empty($this->params)){
       foreach($this->params as $k => $v){
         $params_string .= $k . '=' . $v . '&';
       }
     }
     return $this->api_url . $this->resource . "?" . $params_string . "api_key=" . $this->api_key . "&all=true";
   }
-  
+
   /**
     * Make the API request
     *
@@ -78,7 +77,7 @@ class Base
     * @return string - the XML received from Spektrix
     * @see Base::build_url()
     */
-    
+
   private function request_xml($xml_url)
   {
     $curl = curl_init();
@@ -92,7 +91,7 @@ class Base
     $string = curl_exec($curl);
     return $string;
   }
-  
+
   private function load_or_retrieve_data()
   {
     $file = new CachedFile($this->resource, $this->params);
@@ -104,15 +103,15 @@ class Base
     }
     return $xml_string;
   }
-  
+
   /**
     * Redirect on Exception / Error
     *
     * @return void
     */
-    
+
   private function redirectAsError(){
-    echo "<div class='alert alert-warning'>Sorry, we seem to be having a few problems with the connection to our booking system at the moment. Please give our box office a call to book your tickets</div>";    
+    echo "<div class='alert alert-warning'>Sorry, we seem to be having a few problems with the connection to our booking system at the moment. Please give our box office a call to book your tickets</div>";
     die();
   }
 

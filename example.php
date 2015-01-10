@@ -6,7 +6,5 @@ Dotenv::load(__DIR__);
 
 echo '<pre>';
 
-$show = new Spektrix\Show(19078);
-$show->add_performances();
-print_r($show);
-
+$show = new \Spektrix\Show(22675);
+print_r($show->performances());

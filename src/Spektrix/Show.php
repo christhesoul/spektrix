@@ -64,6 +64,16 @@ class Show extends Base
     return in_array($tag, $this->tags);
   }
 
+  public function performances()
+  {
+    $performances = new PerformanceCollection();
+    $performances->group_by_show();
+    return $performances->data[$this->id];
+  }
+
+
+  // PRIVATE
+
   private function get_show_from_spektrix($id){
     return $this->get_xml_object('events',array('event_id'=>$id))->Event;
   }
@@ -102,37 +112,6 @@ class Show extends Base
       $name = str_replace(' ','_',$name);
       $this->$name = (string) $object->Value;
     }
-  }
-
-  static function find_all()
-  {
-    $api = new Spectrix();
-    $shows = $api->get_events();
-    return $api->collect_shows($shows);
-  }
-
-  static function find_all_in_future()
-  {
-    $api = new Spectrix();
-    $eternity = time() + (60 * 60 * 24 * 7 * 500);
-    $shows = $api->get_shows_until($eternity);
-    return $api->collect_shows($shows);
-  }
-
-  static function this_week()
-  {
-    $api = new Spectrix();
-    $next_week = time() + (60 * 60 * 24 * 7);
-    $shows = $api->get_shows_until($next_week);
-    return $api->collect_shows($shows);
-  }
-
-  static function six_weeks()
-  {
-    $api = new Spectrix();
-    $six_weeks = time() + (60 * 60 * 24 * 7 * 6);
-    $shows = $api->get_shows_until($six_weeks);
-    return $api->collect_shows($shows);
   }
 
   function get_price_lists()

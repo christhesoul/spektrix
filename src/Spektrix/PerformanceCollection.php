@@ -6,14 +6,14 @@ use ArrayObject;
 class PerformanceCollection extends Base
 {
   public $data;
-  
+
   public function __construct($performances = NULL)
   {
     $performances_xml = $this->load_and_clean_xml($performances);
     $this->data = new ArrayObject($this->collect_performances_from_xml($performances_xml));
     return $this;
   }
-  
+
   public function group_by_show()
   {
     $grouped_performances = array();
@@ -23,7 +23,7 @@ class PerformanceCollection extends Base
     $this->data = new ArrayObject($grouped_performances);
     return $this;
   }
-  
+
   private function collect_performances_from_xml($performances_xml)
   {
     $performances = array();
@@ -33,7 +33,7 @@ class PerformanceCollection extends Base
     }
     return $performances;
   }
-  
+
   private function load_and_clean_xml($performances = NULL)
   {
     if(isset($performances)){

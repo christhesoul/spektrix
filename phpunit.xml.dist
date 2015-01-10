@@ -6,6 +6,7 @@
     <env name="SPEKTRIX_KEY_PATH" value="/fuzz/bar/foo"/>
     <env name="SPEKTRIX_API_URL" value="http://spektrix.com/"/>
     <env name="PATH_TO_THEME" value="http://spektrix.com/"/>
+    <env name="PATH_TO_CACHE" value="http://localhost:8888/spektrix/cache"/>
   </php>
   <testsuites>
     <testsuite name="Spektrix Test Suite">
