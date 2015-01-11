@@ -56,6 +56,12 @@ class Performance extends Base
     return $this->start_time < new \DateTime();
   }
 
+  public function availability()
+  {
+    $availability = new AvailabilityCollection();
+    return $availability->data[$this->id];
+  }
+
   function get_price_list()
   {
     $pricelists = $this->get_price_list_for_performance($this->id);

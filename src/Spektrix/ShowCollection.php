@@ -14,7 +14,7 @@ class ShowCollection extends Base
   }
 
   /**
-    * Helper that chains methods together
+    * Helper that chains upcoming() with_performances() in_future() and sort_by_first_performance() methods together
     *
     * @return object ShowCollection object with performances in the future, sorted by first performance
     */

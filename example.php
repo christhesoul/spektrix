@@ -7,4 +7,4 @@ Dotenv::load(__DIR__);
 echo '<pre>';
 
 $show = new \Spektrix\Show(22675);
-print_r($show->performances());
+print_r($show->availabilities());
