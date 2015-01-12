@@ -6,5 +6,5 @@ Dotenv::load(__DIR__);
 
 echo '<pre>';
 
-$show = new \Spektrix\Show(22675);
-print_r($show->availabilities());
+$price_lists = new \Spektrix\PriceListCollection();
+print_r($price_lists);
