@@ -21,8 +21,8 @@ class Base
   public function __construct()
   {
     $this->api_key = getenv('SPEKTRIX_API_KEY');
-    $this->certificate_path = getenv('SPEKTRIX_CERTIFICATE_PATH');
-    $this->key_path = getenv('SPEKTRIX_KEY_PATH');
+    $this->certificate_path = $this->set_if_file_exists(getenv('SPEKTRIX_CERTIFICATE_PATH'));
+    $this->key_path = $this->set_if_file_exists(getenv('SPEKTRIX_KEY_PATH'));
     $this->api_url = getenv('SPEKTRIX_API_URL');
   }
 
@@ -110,9 +110,34 @@ class Base
     * @return void
     */
 
-  private function redirectAsError(){
+  private function redirectAsError()
+  {
     echo "<div class='alert alert-warning'>Sorry, we seem to be having a few problems with the connection to our booking system at the moment. Please give our box office a call to book your tickets</div>";
     die();
   }
 
+  /**
+    * Set if Exists
+    *
+    * @return string - path to file
+    */
+
+  private function set_if_file_exists($path)
+  {
+    try {
+      if(file_exists($path)){
+        return $path;
+      } else {
+        throw new \Exception('Cannot find file: ' . $path);
+      }
+    } catch (\Exception $e){
+      echo $this->print_error($e);
+    }
+  }
+
+  private function print_error($error)
+  {
+    echo $error->getMessage();
+    die();
+  }
 }

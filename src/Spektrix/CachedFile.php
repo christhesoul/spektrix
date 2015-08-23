@@ -3,19 +3,19 @@
 namespace Spektrix;
 
 class CachedFile extends Base {
-  
+
   public $file_name;
   public $full_path_to_file;
   public $path_to_cache;
-  
+
   const ONE_DAY = 86400;
-  
+
   public function __construct($resource, $params){
     $this->path_to_cache = getenv('PATH_TO_CACHE');
     $this->file_name = $this->build_file_name($resource, $params);
     $this->full_path_to_file = $this->build_full_path();
   }
-  
+
   /**
   * Stores a file in the cache
   *
@@ -27,7 +27,7 @@ class CachedFile extends Base {
       file_put_contents($this->full_path_to_file, $some_data);
     }
   }
-  
+
   /**
   * Retrieves a file from the cache
   *
@@ -37,7 +37,7 @@ class CachedFile extends Base {
   public function retrieve(){
     return file_get_contents($this->full_path_to_file);
   }
-  
+
   /**
   * Checks if file exists in cache directory
   *
@@ -47,7 +47,7 @@ class CachedFile extends Base {
   public function is_cached(){
     return file_exists($this->full_path_to_file);
   }
-  
+
   /**
   * Checks if file is less than a day old
   *
@@ -58,7 +58,7 @@ class CachedFile extends Base {
     $yesterday = time() - self::ONE_DAY;
     return filemtime($this->full_path_to_file) > $yesterday;
   }
-  
+
   /**
   * Checks if file exists in cache directory
   * and is less than 24 hours old
@@ -69,7 +69,7 @@ class CachedFile extends Base {
   public function is_cached_and_fresh(){
     return $this->is_cached() && $this->is_fresh();
   }
-  
+
   /**
   * Builds file_name
   *
@@ -91,7 +91,7 @@ class CachedFile extends Base {
       return $resource.$params_string.$ext;
     endif;
   }
-  
+
   /**
   * Builds full path to file
   *
@@ -102,7 +102,7 @@ class CachedFile extends Base {
     if($this->path_to_cache){
       return $this->path_to_cache . $this->file_name;
     } else {
-      return get_stylesheet_directory() . '/cache/' . $this->file_name;
+      return __DIR__ . '/cache/' . $this->file_name;
     }
-  } 
+  }
 }
