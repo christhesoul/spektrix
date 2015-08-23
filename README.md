@@ -14,14 +14,30 @@ Via Composer
 }
 ```
 
+## Configuration
 
-## Usage
+You will need a few things:
+
+* Spektrix API key
+* Valid Spektrix .crt file
+* Valid Spektrix .key file
+* The API URL endpoint for your customer
 
 ``` php
-
-
+// 1. Composer magic
+require('vendor/autoload.php');
+// 2. Load your secret stuff
+Dotenv::load(__DIR__);
+// 3. Throw an error if your secret stuff falls short (see 2)
+Dotenv::required(
+  [
+    'SPEKTRIX_API_KEY',
+    'SPEKTRIX_CERTIFICATE_PATH',
+    'SPEKTRIX_KEY_PATH',
+    'SPEKTRIX_API_URL'
+  ]
+);
 ```
-
 
 ## Testing
 
